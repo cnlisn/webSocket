@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Websocket</title>
+  <script type="text/javascript" src="socket.io.js"></script>
+</head>
+
+<body>
+  <h1>Chat Room</h1>
+  <input id="sendTxt" type="text" />
+  <button id="sendBtn">发送</button>
+  <div id="recv"></div>
+  <script type="text/javascript">
+    // var socket = io("ws://localhost:3000/");
+    var socket = io("http://localhost:3000/");
+
+    //显示消息方法 消息内容 消息类型
+    function ShowMessage(str, type) {
+      //创建一个div
+      var div = document.createElement('div');
+      div.innerHTML = str;
+      //根据类型改变div的style
+      if (type == "enter") {
+        div.style.color = "blue";
+      } else if (type == "leave") {
+        div.style.color = "red";
+      }
+      //将div添加到主窗体上
+      document.body.appendChild(div);
+    }
+
+
+    //发送按钮单击事件
+    document.getElementById("sendBtn").onclick = function () {
+      var txt = document.getElementById("sendTxt").value;
+      if (txt) {
+        socket.emit('message',txt);
+      }
+    }
+
+    //websocket连接建立回调方法
+    socket.on('enter', function (data) {
+      ShowMessage(data, 'enter');
+    });
+
+    //websocket连接断开回调方法
+    socket.on('leave', function (data) {
+      ShowMessage(data, 'leave');
+    });
+
+    //websocket接收到消息回调方法
+    socket.on('message', function (data) {
+      ShowMessage(data, 'message');
+    });
+  </script>
+</body>
+
+</html>

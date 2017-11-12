@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Websocket</title>
+    <script type="text/javascript" src="socket.io.js"></script>
+</head>
+
+<body>
+    <!-- <h1>Echo Test</h1>
+    <input id="sendTxt" type="text" />
+    <button id="sendBtn">发送</button> -->
+    <div id="recv"></div>
+ 
+<script>
+//   var socket = io('http://localhost:3000');
+  var socket = io('ws://localhost:3000');
+  socket.on('news', function (data) {
+    console.log(data);
+    document.getElementById("recv").innerHTML=("收到服务端发来消息："+data.hello);
+
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
+</body>
+
+</html>
